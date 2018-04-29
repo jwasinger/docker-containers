@@ -17,8 +17,16 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - && \
         python3 \
         python
 
+RUN apt install wget -y
+
+
 RUN adduser --disabled-password --gecos '' builder && adduser builder sudo && printf 'builder\tALL=NOPASSWD: ALL\n' >> /etc/sudoers
+
+RUN wget https://dl.google.com/go/go1.10.1.linux-amd64.tar.gz && \
+    tar -xzf go1.10.1.linux-amd64.tar.gz go && \
+    printf '\nexport PATH=$PATH:/go/bin\nexport GOPATH=/home/builder/go' >> /home/builder/.bashrc
+
+RUN mkdir /home/builder/go
 
 USER builder
 WORKDIR /home/builder
-
